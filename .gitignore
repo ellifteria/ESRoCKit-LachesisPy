@@ -1,0 +1,8 @@
+.vscode
+.DS_Store
+
+hidden-folder
+
+__pycache__
+
+
