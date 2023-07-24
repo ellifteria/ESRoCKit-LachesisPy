@@ -1,6 +1,8 @@
 import numpy as np
 from xml.dom.minidom import parse
 from io import StringIO
+import warnings
+from collections.abc import Callable
 
 class NeuralNetwork:
 
@@ -21,11 +23,11 @@ class NeuralNetwork:
         network_weights = {}
         network_biases = {}
 
-        sensor_neuron_list = ennf_doc.getElementsByTagName("sensor_neuron")
+        sensor_neuron_list = ennf_doc.getElementsByTagName("sensor")
         for neuron in sensor_neuron_list:
             sensor_neurons[int(neuron.getAttribute("index"))] = neuron.getAttribute("link")
 
-        motor_neuron_list = ennf_doc.getElementsByTagName("motor_neuron")
+        motor_neuron_list = ennf_doc.getElementsByTagName("motor")
         for neuron in motor_neuron_list:
             motor_neurons[int(neuron.getAttribute("index"))] = neuron.getAttribute("joint")
 
@@ -35,7 +37,7 @@ class NeuralNetwork:
                 StringIO(layer.getAttribute("weight_matrix").replace("; ", "\n"))
             )
             network_biases[int(layer.getAttribute("index"))] = np.loadtxt(
-                StringIO(layer.getAttribute("bias_matrix").replace("; ", "\n"))
+                StringIO(layer.getAttribute("bias_matrix").replace(", ", "\n"))
             )
 
         return (
@@ -45,7 +47,6 @@ class NeuralNetwork:
             network_biases
         )
 
-
     def __init__(self, file_path: str, activation_function: str = "relu") -> None:
         sensor_neurons, motor_neurons, network_weights, network_biases = self.interpret_ennf_file(file_path)
         self.sensor_neurons: dict[int, str] = sensor_neurons
@@ -53,7 +54,9 @@ class NeuralNetwork:
         self.biases: dict[int, np.ndarray] = network_biases
         self.weights: dict[int, np.ndarray] = network_weights
 
-        self.output: np.ndarray = np.ndarray(shape=(len(motor_neurons),), dtype=float)
+        self._validate_network()
+
+        self.output: np.ndarray = np.ndarray(shape=(np.shape(self.weights[max(self.weights.keys())])[0],), dtype=float)
 
         match activation_function:
             case "relu":
@@ -62,7 +65,24 @@ class NeuralNetwork:
                 temp_activation_function = self.sigmoid
             case _:
                 raise ValueError("Activation function must be a supported LachesisPy NeuralNetwork activation function")
-        self.activation_function: function = temp_activation_function
+        self.activation_function: Callable[[np.ndarray], np.ndarray] = temp_activation_function
+
+    def _validate_network(self) -> None:
+        if len(self.sensor_neurons) != np.shape(self.weights[0])[1]:
+            warnings.warn("Non-fatal incorrect size: initial layer; number of columns does not match number of sensor neurons")
+        
+        if len(self.motor_neurons) != np.shape(self.weights[max(self.weights.keys())])[0]:
+            warnings.warn("Non-fatal incorrect size: final layer; number of rows does not match number of motor neurons")
+
+        for i in range(len(self.weights) - 1):
+            first_layer = self.weights[i]
+            second_layer = self.weights[i + 1]
+
+            first_shape = np.shape(first_layer)[0]
+            second_shape = np.shape(second_layer)[1]
+
+            if first_shape != second_shape:
+                raise ValueError(f"Fatal incorrect size: layers {i}, {i+1} sizes ({first_shape}, {second_shape}) do not match properly for feed-forward matrix multiplication")
 
     def feed_forward(self, inputs: np.ndarray) -> None:
         a: np.ndarray = inputs

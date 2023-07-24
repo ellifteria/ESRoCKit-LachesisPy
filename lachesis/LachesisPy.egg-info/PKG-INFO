@@ -1,0 +1,6 @@
+Metadata-Version: 2.1
+Name: LachesisPy
+Version: 0.0.1
+Summary: LachesisPy, an ESRoCKit package for simulated robot control.
+Author: Eleftheria Beres <elli.beres@u.northwestern.edu>
+Requires-Python: >=3.11

@@ -5,7 +5,7 @@ setup(
     description='LachesisPy, an ESRoCKit package for simulated robot control.',
     name='LachesisPy',
     version='0.0.1',
-    packages=find_packages(include=['lachesis','lachesis.*']),
+    packages=find_packages(include=['lachesis']),
     install_requires=[
          "numpy == 1.25.1",
         #  "pandas == 2.0.3",
