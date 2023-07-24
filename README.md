@@ -1,3 +1,3 @@
 # ESRoCKit-LachesisPy
 
-Simulated robotics controller for ESRoCKit.
+LachesisPy, an ESRoCKit package for simulated robot control.
