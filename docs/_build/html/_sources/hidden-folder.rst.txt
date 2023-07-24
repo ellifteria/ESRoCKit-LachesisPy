@@ -1,0 +1,237 @@
+hidden\-folder package
+======================
+
+Submodules
+----------
+
+hidden\-folder.collisionsdf module
+----------------------------------
+
+.. automodule:: hidden-folder.collisionsdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.collisionurdf module
+-----------------------------------
+
+.. automodule:: hidden-folder.collisionurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.commonFunctions module
+-------------------------------------
+
+.. automodule:: hidden-folder.commonFunctions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.constants module
+-------------------------------
+
+.. automodule:: hidden-folder.constants
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.geometrysdf module
+---------------------------------
+
+.. automodule:: hidden-folder.geometrysdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.geometryurdf module
+----------------------------------
+
+.. automodule:: hidden-folder.geometryurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.inertialsdf module
+---------------------------------
+
+.. automodule:: hidden-folder.inertialsdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.inertialurdf module
+----------------------------------
+
+.. automodule:: hidden-folder.inertialurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.inertiasdf module
+--------------------------------
+
+.. automodule:: hidden-folder.inertiasdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.inertiaurdf module
+---------------------------------
+
+.. automodule:: hidden-folder.inertiaurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.joint module
+---------------------------
+
+.. automodule:: hidden-folder.joint
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.linksdf module
+-----------------------------
+
+.. automodule:: hidden-folder.linksdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.linkurdf module
+------------------------------
+
+.. automodule:: hidden-folder.linkurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.masssdf module
+-----------------------------
+
+.. automodule:: hidden-folder.masssdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.massurdf module
+------------------------------
+
+.. automodule:: hidden-folder.massurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.material module
+------------------------------
+
+.. automodule:: hidden-folder.material
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.model module
+---------------------------
+
+.. automodule:: hidden-folder.model
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.neuralNetwork module
+-----------------------------------
+
+.. automodule:: hidden-folder.neuralNetwork
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.neuron module
+----------------------------
+
+.. automodule:: hidden-folder.neuron
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.nndf module
+--------------------------
+
+.. automodule:: hidden-folder.nndf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.originurdf module
+--------------------------------
+
+.. automodule:: hidden-folder.originurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.pyrosim\_z module
+--------------------------------
+
+.. automodule:: hidden-folder.pyrosim_z
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.robot module
+---------------------------
+
+.. automodule:: hidden-folder.robot
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.sdf module
+-------------------------
+
+.. automodule:: hidden-folder.sdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.synapse module
+-----------------------------
+
+.. automodule:: hidden-folder.synapse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.urdf module
+--------------------------
+
+.. automodule:: hidden-folder.urdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.visualsdf module
+-------------------------------
+
+.. automodule:: hidden-folder.visualsdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+hidden\-folder.visualurdf module
+--------------------------------
+
+.. automodule:: hidden-folder.visualurdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: hidden-folder
+   :members:
+   :undoc-members:
+   :show-inheritance:

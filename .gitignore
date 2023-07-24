@@ -5,4 +5,4 @@ hidden-folder
 
 __pycache__
 
-
+.mypy_cache
