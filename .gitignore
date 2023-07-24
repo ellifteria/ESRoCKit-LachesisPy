@@ -2,6 +2,7 @@
 .DS_Store
 
 hidden-folder
+
 docs
 
 __pycache__
