@@ -101,13 +101,15 @@ class NeuralNetwork:
         return self.output
     
     def get_joint_targets(self) -> tuple[list[str], list[float]]:
-        network_output: np.ndarray = self.get_network_output()
-        output_len = len(self.motor_neurons)
-        joints_list = [''] * output_len
-        values_list = [0.0] * output_len
+        network_output: np.ndarray  = self.get_network_output()
+        output_len:     int         = len(self.motor_neurons)
+        joints_list:    list[str]   = [''] * output_len
+        values_list:    list[float] = [0.0] * output_len
+
         for i in range(output_len):
             joints_list[i] = self.motor_neurons[i]
             values_list[i] = network_output[i]
+            
         return (joints_list, values_list)
 
     # ACTION METHODS
