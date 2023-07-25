@@ -19,6 +19,10 @@ class RobotController():
         self.robot_id:      int             = robot_id
         self.robot_joints:  dict[str, int]  = self._determine_joint_ids()
 
+    # ACCESS METHODS
+    def get_robot_joints(self) -> dict[str, int]:
+        return self.robot_joints
+
     # ACTION METHODS
     def update_joint_motors(
             self,
@@ -33,8 +37,8 @@ class RobotController():
         num_joints:     int         = len(self.robot_joints)
 
         joint_ids:  list[int]   = [-1] * num_joints
-        positions:  list[float] = [-1] * num_joints
-        velocities: list[float] = [-1] * num_joints
+        positions:  list[float] = [-1.0] * num_joints
+        velocities: list[float] = [-1.0] * num_joints
 
         for index, joint_name in enumerate(self.robot_joints):
             joint_ids[index]        = self.robot_joints[joint_name]
@@ -59,8 +63,8 @@ class RobotController():
             pblt_kwargs["physicsClientId"] = physics_client
         
         pblt.setJointMotorControlArray(
-            bodyUniqueId = self.robot_id,
+            bodyIndex = self.robot_id,
             jointIndices = joint_ids,
-            control_mode = control_mode,
+            controlMode = control_mode,
             **pblt_kwargs
         )
