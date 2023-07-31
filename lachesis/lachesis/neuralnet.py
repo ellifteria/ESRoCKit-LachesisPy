@@ -14,6 +14,10 @@ class NeuralNetwork:
     @staticmethod
     def sigmoid(X: np.ndarray) -> np.ndarray:
         return 1 / (1 + np.exp(-1 * X))
+
+    @staticmethod
+    def linear(X: np.ndarray) -> np.ndarray:
+        return X
     
     @staticmethod
     def interpret_ennf_file(file_path: str) -> tuple:
@@ -82,6 +86,8 @@ class NeuralNetwork:
                 temp_activation_function = self.relu
             case "sigmoid":
                 temp_activation_function = self.sigmoid
+            case "linear":
+                temp_activation_function = self.linear
             case _:
                 raise ValueError("Activation function must be a supported LachesisPy NeuralNetwork activation function")
         self.activation_function: Callable[[np.ndarray], np.ndarray] = temp_activation_function
