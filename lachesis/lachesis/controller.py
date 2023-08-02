@@ -43,9 +43,9 @@ class RobotController():
         for index, joint_name in enumerate(self.robot_joints):
             joint_ids[index]        = self.robot_joints[joint_name]
             if target_positions is not None:
-                positions[index]    = target_positions[joint_name]
+                positions[index]    = target_positions[joint_name] if joint_name in target_positions else 0.0
             if target_velocities is not None:
-                velocities[index]    = target_velocities[joint_name]
+                velocities[index]    = target_velocities[joint_name] if joint_name in target_velocities else 0.0
         
         pblt_kwargs: dict[str, Any] = {}
 

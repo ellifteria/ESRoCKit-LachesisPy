@@ -30,7 +30,7 @@ class NeuralNetwork:
 
         sensor_neuron_list = ennf_doc.getElementsByTagName("sensor")
         for neuron in sensor_neuron_list:
-            sensor_neurons[int(neuron.getAttribute("index"))] = neuron.getAttribute("link")
+            sensor_neurons[neuron.getAttribute("link")] = int(neuron.getAttribute("index"))
 
         motor_neuron_list = ennf_doc.getElementsByTagName("motor")
         for neuron in motor_neuron_list:
@@ -38,12 +38,23 @@ class NeuralNetwork:
 
         network_layers = ennf_doc.getElementsByTagName("network_layer")
         for layer in network_layers:
-            network_weights[int(layer.getAttribute("index"))] = np.loadtxt(
+            index = int(layer.getAttribute("index"))
+            network_weights[index] = np.loadtxt(
                 StringIO(layer.getAttribute("weight_matrix").replace("; ", "\n"))
             )
-            network_biases[int(layer.getAttribute("index"))] = np.loadtxt(
+            network_biases[index] = np.loadtxt(
                 StringIO(layer.getAttribute("bias_matrix").replace(", ", "\n"))
             )
+            
+            if len(np.shape(network_weights[index])) == 1:
+                if np.size(network_biases[index]) == 1:
+                    network_weights[index] = np.reshape(
+                        network_weights[index],
+                        (np.size(network_weights[index]), 1))
+                else:
+                    network_weights[index] = np.reshape(
+                        network_weights[index],
+                        (1, np.size(network_weights[index])))
 
         return (
             sensor_neurons,
@@ -74,7 +85,7 @@ class NeuralNetwork:
     def __init__(self, file_path: str, activation_function: str = "relu") -> None:
         sensor_neurons, motor_neurons, network_weights, network_biases = self.interpret_ennf_file(file_path)
 
-        self.sensor_neurons:    dict[int, str]          = sensor_neurons
+        self.sensor_neurons:    dict[str, int]          = sensor_neurons
         self.motor_neurons:     dict[int, str]          = motor_neurons
         self.biases:            dict[int, np.ndarray]   = network_biases
         self.weights:           dict[int, np.ndarray]   = network_weights
@@ -95,7 +106,7 @@ class NeuralNetwork:
         self._output_has_been_calculated: bool = False
 
     # ACCESS METHODS
-    def get_sensor_neurons(self) -> dict[int, str]:
+    def get_sensor_neurons(self) -> dict[str, int]:
         return self.sensor_neurons
     
     def get_motor_neurons(self) -> dict[int, str]:
@@ -106,7 +117,7 @@ class NeuralNetwork:
             raise RuntimeError("No output exists; you must feed forward through the network first")
         return self.output
     
-    def get_joint_targets(self) -> tuple[list[str], list[float]]:
+    def get_joint_targets(self) -> dict[str, float]:
         network_output: np.ndarray  = self.get_network_output()
         output_len:     int         = len(self.motor_neurons)
         joints_list:    list[str]   = [''] * output_len
@@ -114,12 +125,31 @@ class NeuralNetwork:
 
         for i in range(output_len):
             joints_list[i] = self.motor_neurons[i]
-            values_list[i] = network_output[i]
+            values_list[i] = float(network_output[i])
+        
+        targets = {joint: value for (joint, value) in zip(joints_list, values_list)}
             
-        return (joints_list, values_list)
+        return targets
+    
+    # MODIFIER METHODS
+    def update_sensor_neurons(self, new_sensor_neurons: dict[str, int]) -> None:
+        warnings.warn("WARNING: Use of this method is not recommended for most cases and can prevent LachesisPy from being able to simulate properly. \nDo not use this methods unless you know what you are doing!")
+        
+        if len(new_sensor_neurons) != len(self.sensor_neurons):
+            warnings.warn("WARNING: The provided sensor neuron dictionary does NOT properly match the size of the current sensor neurons dictionary. This discrepancy may prevent LachesisPy from being able to simulate properly.\nDo not use this method unless you know what you are doing!")
+        
+        self.sensor_neurons = new_sensor_neurons
+    
+    def update_motor_neurons(self, new_motor_neurons: dict[int, str]) -> None:
+        warnings.warn("WARNING: Use of this method is not recommended for most cases and can prevent LachesisPy from being able to simulate properly. \nDo not use this methods unless you know what you are doing!")
+        
+        if len(new_motor_neurons) != len(self.motor_neurons):
+            warnings.warn("WARNING: The provided motor neuron dictionary does NOT properly match the size of the current motor neurons dictionary. This discrepancy may prevent LachesisPy from being able to simulate properly.\nDo not use this method unless you know what you are doing!")
+        
+        self.motor_neurons = new_motor_neurons
 
     # ACTION METHODS
-    def feed_forward(self, inputs: np.ndarray) -> None:
+    def feed_forward_raw(self, inputs: np.ndarray) -> None:
         a: np.ndarray = inputs
 
         for (w, b) in zip(self.weights.values(), self.biases.values()):
@@ -128,3 +158,17 @@ class NeuralNetwork:
 
         self.output: np.ndarray = a
         self._output_has_been_calculated = True
+
+    def feed_forward(self, inputs: dict[str, float]) -> None:
+        if isinstance(inputs, np.ndarray):
+            warnings.warn("Use of feed_forward method with np.ndarray parameter is being depreciated. For feed_forward, please provide an argument of type dict[str, float] or use feed_forward_raw")
+            self.feed_forward_raw(inputs)
+            return
+
+        raw_inputs = np.zeros((len(self.sensor_neurons), 1))
+
+        for neuron_name in inputs:
+            index = self.sensor_neurons[neuron_name]
+            raw_inputs[index] = inputs[neuron_name]
+
+        self.feed_forward_raw(raw_inputs)
