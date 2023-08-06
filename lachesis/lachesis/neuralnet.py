@@ -46,6 +46,10 @@ class NeuralNetwork:
                 StringIO(layer.getAttribute("bias_matrix").replace(", ", "\n"))
             )
             
+            network_biases[index] = np.reshape(
+                network_biases[index],
+                (np.size(network_biases[index]), 1)) 
+            
             if len(np.shape(network_weights[index])) == 1:
                 if np.size(network_biases[index]) == 1:
                     network_weights[index] = np.reshape(
@@ -153,7 +157,7 @@ class NeuralNetwork:
         a: np.ndarray = inputs
 
         for (w, b) in zip(self.weights.values(), self.biases.values()):
-            z = (w * a) + b
+            z = (w @ a) + b
             a = self.activation_function(z)
 
         self.output: np.ndarray = a
