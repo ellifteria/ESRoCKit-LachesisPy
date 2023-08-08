@@ -4,6 +4,8 @@ from io import StringIO
 import warnings
 from collections.abc import Callable
 
+from .controller import RobotController
+
 class NeuralNetwork:
 
     # STATIC METHODS
@@ -176,3 +178,16 @@ class NeuralNetwork:
             raw_inputs[index] = inputs[neuron_name]
 
         self.feed_forward_raw(raw_inputs)
+
+    def get_sensor_collisions(self, robot_controller: RobotController) -> dict[str, int]:
+        sensor_collisions: dict[str, int] = {}
+        for sensor_name in self.get_sensor_neurons():
+            if sensor_name[0:5] == "brain":
+                continue
+            sensor_is_colliding = robot_controller.is_link_colliding(sensor_name)
+            if sensor_is_colliding:
+                sensor_collisions[sensor_name] = 1
+            else:
+                sensor_collisions[sensor_name] = 0
+        
+        return sensor_collisions
