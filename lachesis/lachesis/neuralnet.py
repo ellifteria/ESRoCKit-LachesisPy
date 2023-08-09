@@ -42,10 +42,12 @@ class NeuralNetwork:
         for layer in network_layers:
             index = int(layer.getAttribute("index"))
             network_weights[index] = np.loadtxt(
-                StringIO(layer.getAttribute("weight_matrix").replace("; ", "\n"))
+                StringIO(layer.getAttribute("weight_matrix").replace("; ", "\n")),
+                ndmin=2
             )
             network_biases[index] = np.loadtxt(
-                StringIO(layer.getAttribute("bias_matrix").replace(", ", "\n"))
+                StringIO(layer.getAttribute("bias_matrix").replace(", ", "\n")),
+                ndmin=2
             )
             
             network_biases[index] = np.reshape(
@@ -71,6 +73,9 @@ class NeuralNetwork:
 
     # PRIVATE METHODS
     def _validate_network(self) -> None:
+        if len(self.sensor_neurons) == len(self.motor_neurons) == len(self.weights) == 0:
+            return
+        
         if len(self.sensor_neurons) != np.shape(self.weights[0])[1]:
             warnings.warn("Non-fatal incorrect size: initial layer; number of columns does not match number of sensor neurons")
         
@@ -159,7 +164,8 @@ class NeuralNetwork:
         a: np.ndarray = inputs
 
         for (w, b) in zip(self.weights.values(), self.biases.values()):
-            z = (w @ a) + b
+            z = (w @ a)
+            z = z + b
             a = self.activation_function(z)
 
         self.output: np.ndarray = a
